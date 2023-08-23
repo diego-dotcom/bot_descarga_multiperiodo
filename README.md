@@ -24,7 +24,7 @@
 
  - Campos obligatorios: cuit, clave, desde, hasta.
 
- - Campo optativo: contribuyente. Debe estar en formato APELLIDOS NOMBRES, en mayúsculas sin acentos ni coma. Por ejemplo: MENDIZABAL DIEGO
+ - Campo optativo: contribuyente. Con solo ingresar en mayúsculas una parte inequívoca del nombre o apellido del contribuyente a descargar, el bot lo identifica.
     Sólo es obligatorio cuando dentro de "Mis Comprobantes" haya más de un contribuyente disponible para ese CUIT.
 
 

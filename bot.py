@@ -13,7 +13,6 @@ import pandas
 import time
 from selenium import webdriver
 import random
-# from datetime import datetime, timedelta
 from fechas import obtener_rangos_meses_completos
 from selenium.webdriver.common.by import By
 from tkinter import messagebox
@@ -89,9 +88,13 @@ def descarga():
 
         try:
             driver.find_element(
-                By.XPATH, f"//h2[text()='{contribuyente}']").click()
+                By.XPATH, f"//h2[contains(text(), '{contribuyente}')]").click()
         except:
-            pass
+            try:
+                driver.find_element(
+                    By.XPATH, f"//h3[contains(text(), '{contribuyente}')]").click()
+            except:
+                pass
 
         # Descarga los comprobantes recibidos
 
