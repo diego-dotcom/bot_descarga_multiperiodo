@@ -1,9 +1,9 @@
 import tkinter as tk
 import webbrowser
-import bot
 import os
 import subprocess
-from tkinter import Label, Button, messagebox
+import bot
+from tkinter import Label, Button, IntVar, Checkbutton, messagebox
 from tkinter.ttk import Separator
 
 
@@ -26,10 +26,14 @@ def create_window():
 
     root = tk.Tk()
     root.title("Bot descarga desde Mis Comprobantes")
-    root.geometry("640x200")
+    root.geometry("640x300")
     root.iconbitmap("icono.ico")
 
-    # Frame para agrupar los elementos principales
+    # Variables globales para los formatos
+    excel_var = IntVar(value=0)  # Por defecto, Excel marcado
+    csv_var = IntVar(value=1)    # Por defecto, CSV desmarcado
+
+    # Frame principal
     frame_main = tk.Frame(root)
     frame_main.pack(pady=5)
 
@@ -39,8 +43,18 @@ def create_window():
     Label(frame_main, text="Tiene a su disposicion el archivo 'Leeme.txt' en la carpeta del programa").pack(
         fill='x', pady=5)
 
-    # Botones para generar listado de facturas a CF
-    Button(frame_main, text="Iniciar bot", command=bot.descarga).pack(pady=10)
+    # Frame de formatos de descarga
+    frame_formatos = tk.Frame(root)
+    frame_formatos.pack(pady=5)
+
+    Label(frame_formatos, text="Seleccione los formatos de descarga:").pack()
+    Checkbutton(frame_formatos, text="Excel (.xlsx)",
+                variable=excel_var).pack()
+    Checkbutton(frame_formatos, text="CSV (.csv)", variable=csv_var).pack()
+
+    # Botón principal
+    Button(frame_main, text="Iniciar bot", command=lambda: bot.descarga(
+        excel_var.get(), csv_var.get())).pack(pady=10)
 
     Button(frame_main, text="Ver archivo contribuyentes",
            command=lambda: abrir_archivo_xlsx("contribuyentes")).pack(pady=10)
@@ -50,8 +64,7 @@ def create_window():
     separator = Separator(root, orient='horizontal')
     separator.pack(fill='x', pady=5)
 
-    # Frame para agrupar elementos de créditos
-    '''
+    # Frame de colaboración
     frame_colaborar = tk.Frame(root)
     frame_colaborar.pack(pady=5)
     Label(frame_colaborar, text="Si te simplificó el trabajo, colaborá con el proyecto!").pack(
