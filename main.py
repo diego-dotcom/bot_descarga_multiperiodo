@@ -1,12 +1,25 @@
 import tkinter as tk
 import webbrowser
 import bot
-from tkinter import Label, Button
+import os
+import subprocess
+from tkinter import Label, Button, messagebox
 from tkinter.ttk import Separator
 
 
 def link_clicked():
     webbrowser.open_new_tab("https://cafecito.app/diego-dotcom")
+
+
+def abrir_archivo_xlsx(archivo):
+    try:
+        excel_file_path = f"./{archivo}.xlsx"
+        if os.path.exists(excel_file_path):
+            subprocess.Popen(['start', 'excel', excel_file_path], shell=True)
+        else:
+            messagebox.showerror("Error", "El archivo no existe.")
+    except Exception as e:
+        messagebox.showerror("Error", f"Error al abrir el archivo: {e}")
 
 
 def create_window():
@@ -23,17 +36,22 @@ def create_window():
     Label(frame_main, text="No olvide modificar y guardar el archivo 'contribuyentes.xlsx' según su preferencia").pack(
         fill='x', pady=5)
 
-    Label(frame_main, text="Tiene a su disposicion el archivo 'Leeme.txt' en la carpeta donde instalo el bot").pack(
+    Label(frame_main, text="Tiene a su disposicion el archivo 'Leeme.txt' en la carpeta del programa").pack(
         fill='x', pady=5)
 
     # Botones para generar listado de facturas a CF
     Button(frame_main, text="Iniciar bot", command=bot.descarga).pack(pady=10)
 
+    Button(frame_main, text="Ver archivo contribuyentes",
+           command=lambda: abrir_archivo_xlsx("contribuyentes")).pack(pady=10)
+
     # Separación
+
     separator = Separator(root, orient='horizontal')
     separator.pack(fill='x', pady=5)
 
     # Frame para agrupar elementos de créditos
+    '''
     frame_colaborar = tk.Frame(root)
     frame_colaborar.pack(pady=5)
     Label(frame_colaborar, text="Si te simplificó el trabajo, colaborá con el proyecto!").pack(
@@ -42,6 +60,7 @@ def create_window():
         frame_colaborar, text="Cafecito", command=link_clicked)
     btn_colaborar.pack(side=tk.RIGHT, padx=5)
     Label(root, text="https://twitter.com/diegom3ndizabal").pack(side=tk.BOTTOM, pady=5)
+    '''
 
     root.mainloop()
 
