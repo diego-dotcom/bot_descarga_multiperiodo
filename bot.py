@@ -16,15 +16,19 @@ import random
 from fechas import obtener_rangos_meses_completos
 from selenium.webdriver.common.by import By
 from tkinter import messagebox
-
+from datetime import datetime
 
 excel_claves = r'.\contribuyentes.xlsx'
 
 df = pandas.read_excel(excel_claves, engine='openpyxl')
 
 
-def descarga():
+def descarga(excel_flag, csv_flag):
 
+    if not excel_flag and not csv_flag:
+        messagebox.showerror("Error", "Debe seleccionar al menos un formato para descargar (Excel y/o CSV)")
+        return  # Sale de la función y no sigue ejecutando
+    
     # Se recorre cada fila de la planilla de cálculo
     for i in df.index:
 
@@ -39,9 +43,15 @@ def descarga():
         fecha_inicio = fecha_inicio.strftime('%d/%m/%Y')
         fecha_fin = fecha_fin.strftime('%d/%m/%Y')
 
-        # Obtengo la lista de períodos a descargar
-        lista_periodos = obtener_rangos_meses_completos(
-            fecha_inicio, fecha_fin)
+        # Si la diferencia de meses entre fecha_inicio y fecha_fin es <= 12, uso el rango completo
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, '%d/%m/%Y')
+        fecha_fin_dt = datetime.strptime(fecha_fin, '%d/%m/%Y')
+        diferencia_meses = (fecha_fin_dt.year - fecha_inicio_dt.year) * 12 + (fecha_fin_dt.month - fecha_inicio_dt.month)
+
+        if diferencia_meses <= 12:
+            lista_periodos = [(fecha_inicio, fecha_fin)]  # Un solo período
+        else:
+            lista_periodos = obtener_rangos_meses_completos(fecha_inicio, fecha_fin)  # Como antes
 
         # Comienza el programa abriendo el login en la web de AFIP
         option = webdriver.ChromeOptions()
@@ -111,9 +121,12 @@ def descarga():
             time.sleep(2)
             driver.find_element(By.ID, "buscarComprobantes").click()
             time.sleep(3)
-
-            driver.find_element(
-                By.XPATH, "//button[@class='btn btn-default buttons-excel buttons-html5 btn-defaut btn-sm sinborde']").click()
+            if excel_flag:
+                driver.find_element(
+                    By.XPATH, "//button[@class='btn btn-default buttons-excel buttons-html5 btn-defaut btn-sm sinborde']").click()
+            if csv_flag:
+                driver.find_element(
+                    By.XPATH, "//button[@class='btn btn-default btn-defaut btn-sm sinborde']").click()
             time.sleep(1)
             driver.find_element(By.XPATH, "//a[@href='#tabConsulta']").click()
 
@@ -134,9 +147,12 @@ def descarga():
             time.sleep(2)
             driver.find_element(By.ID, "buscarComprobantes").click()
             time.sleep(3)
-
-            driver.find_element(
-                By.XPATH, "//button[@class='btn btn-default buttons-excel buttons-html5 btn-defaut btn-sm sinborde']").click()
+            if excel_flag:
+                driver.find_element(
+                    By.XPATH, "//button[@class='btn btn-default buttons-excel buttons-html5 btn-defaut btn-sm sinborde']").click()
+            if csv_flag:
+                driver.find_element(
+                    By.XPATH, "//button[@class='btn btn-default btn-defaut btn-sm sinborde']").click()
             time.sleep(1)
             driver.find_element(By.XPATH, "//a[@href='#tabConsulta']").click()
 
