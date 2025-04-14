@@ -73,7 +73,6 @@ def create_window():
         frame_colaborar, text="Cafecito", command=link_clicked)
     btn_colaborar.pack(side=tk.RIGHT, padx=5)
     Label(root, text="https://twitter.com/diegom3ndizabal").pack(side=tk.BOTTOM, pady=5)
-    '''
 
     root.mainloop()
 
