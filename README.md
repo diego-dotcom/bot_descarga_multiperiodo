@@ -5,18 +5,6 @@
 1.  Descargue el instalador (.exe) que se encuentra a la derecha (Releases). 
 2.  Ejecute el instalador y siga las instrucciones.
 
-----------
-
-**IMPORTARTE: Chromedriver**
-
- - Recuerde tener instalado Google Chrome en su PC.
-
-- Descargue Chromedriver desde https://chromedriver.chromium.org/downloads de acuerdo a su version de Google Chrome.
-
-- Descomprima el archivo descargado, y guarde "chromedriver.exe" en la misma carpeta en la que instalo el bot.
-
-- Cada vez que actualice Google Chrome, recuerde descargar la version correspondiente de Chromedriver.
-
 
 ----------
 
